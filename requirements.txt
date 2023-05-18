@@ -146,7 +146,6 @@ python-dateutil==2.8.2
 python-docx==0.8.11
 pytz==2023.3
 pytz-deprecation-shim==0.1.0.post0
-pywin32==305.1
 pywinpty==2.0.10
 pywinutils==0.2
 PyYAML==6.0
