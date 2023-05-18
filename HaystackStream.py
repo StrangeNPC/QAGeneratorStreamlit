@@ -78,6 +78,8 @@ def generate_haystack_answers(df, context, generator, retriever):
 
 
 def main():
+    # Turn off Haystack telemetry
+    os.environ["ENABLE_USAGE_TRACKING"] = "false"
     st.title("Question Generation and Answering")
     st.subheader("Generate Questions and Answers")
 
