@@ -3,6 +3,7 @@ import pandas as pd
 import random
 import torch
 import base64
+from haystack.document_stores import InMemoryDocumentStore
 from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
 from haystack.document_stores import FAISSDocumentStore
 from haystack.nodes import EmbeddingRetriever, Seq2SeqGenerator
@@ -61,6 +62,7 @@ def generate_haystack_answers(df, context, generator, retriever):
 
     document = Document(content=context, meta={"name": "Context"})
     documents = [document]
+    document_store = FAISSDocumentStore(faiss_index_factory_str="Flat", return_embedding=True,sql_url="sqlite://")
     document_store.delete_documents()
     document_store.write_documents(documents)
     document_store.update_embeddings(retriever=retriever)
