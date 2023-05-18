@@ -83,12 +83,12 @@ def main():
     context = st.text_area("Enter the context:")
     num_questions = st.selectbox("Number of Questions to Generate:", options=[1, 2, 3, 4, 5], index=0)
 
-    if st.button("Generate Questions"):
+    if st.button("Step 1: Generate Questions & Answer usint T5"):
         df = generate_questions(context, num_questions)
         st.write(df)
 
-    st.subheader("Generate Answers using Haystack")
-    if st.button("Generate Answers"):
+    st.subheader("Step 2 (Optional): Generate Answers using Haystack")
+    if st.button("Step 3: Generate Answers"):
         generator = pipeline('text2text-generation', model='voidful/context-only-question-generator')
         retriever = EmbeddingRetriever(document_store=document_store,
                                        embedding_model="flax-sentence-embeddings/all_datasets_v3_mpnet-base",
