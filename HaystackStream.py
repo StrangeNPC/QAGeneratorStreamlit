@@ -104,5 +104,5 @@ def main():
 
 
 if __name__ == '__main__':
-    install_libraries()
+    #install_libraries()
     main()
