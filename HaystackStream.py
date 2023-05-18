@@ -86,6 +86,7 @@ def main():
 
     if st.button("Generate Questions, Answers, and Download Excel"):
         df = generate_questions(context, num_questions)
+        document_store = FAISSDocumentStore(faiss_index_factory_str="Flat", return_embedding=True, sql_url="sqlite://")
         generator = pipeline('text2text-generation', model='voidful/context-only-question-generator')
         retriever = EmbeddingRetriever(document_store=document_store,
                                        embedding_model="flax-sentence-embeddings/all_datasets_v3_mpnet-base",
