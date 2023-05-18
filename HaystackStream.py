@@ -2,13 +2,13 @@ import streamlit as st
 import pandas as pd
 import random
 import torch
+import base64
 from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
 from haystack.document_stores import FAISSDocumentStore
 from haystack.nodes import EmbeddingRetriever, Seq2SeqGenerator
 from haystack.pipelines import GenerativeQAPipeline
 from haystack.utils import print_answers
 from haystack import Document
-
 
 import subprocess
 
@@ -78,17 +78,13 @@ def generate_haystack_answers(df, context, generator, retriever):
 
 def main():
     st.title("Question Generation and Answering")
-    st.subheader("Generate Questions")
-    
+    st.subheader("Generate Questions and Answers")
+
     context = st.text_area("Enter the context:")
     num_questions = st.selectbox("Number of Questions to Generate:", options=[1, 2, 3, 4, 5], index=0)
 
-    if st.button("Step 1: Generate Questions & Answer usint T5"):
+    if st.button("Generate Questions, Answers, and Download Excel"):
         df = generate_questions(context, num_questions)
-        st.write(df)
-
-    st.subheader("Step 2 (Optional): Generate Answers using Haystack")
-    if st.button("Step 3: Generate Answers"):
         generator = pipeline('text2text-generation', model='voidful/context-only-question-generator')
         retriever = EmbeddingRetriever(document_store=document_store,
                                        embedding_model="flax-sentence-embeddings/all_datasets_v3_mpnet-base",
@@ -96,10 +92,9 @@ def main():
         df = generate_haystack_answers(df, context, generator, retriever)
         st.write(df)
 
-    if st.button("Download DataFrame as CSV"):
         csv = df.to_csv(index=False)
         b64 = base64.b64encode(csv.encode()).decode()
-        href = f'<a href="data:file/csv;base64,{b64}" download="question_answer.csv">Download CSV file</a>'
+        href = f'<a href="data:file/csv;base64,{b64}" download="question_answer.csv">Download Excel</a>'
         st.markdown(href, unsafe_allow_html=True)
 
 
